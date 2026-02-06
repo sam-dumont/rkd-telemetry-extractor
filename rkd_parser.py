@@ -447,25 +447,36 @@ def export_csv(session: RKDSession, output_path: str | Path) -> None:
     first_gps_frame = gps_fixes[0].frame
     last_gps_frame = gps_fixes[-1].frame
 
-    # Derived channels computed from 30 Hz IMU data:
-    #   - accel_forward / accel_lateral: body-frame accelerations with gravity removed
-    #     (positive forward = accelerating, positive lateral = turning right)
-    #   - g_lon / g_lat / g_total: g-forces (accel / 9.81)
-    #   - braking: 1 when decelerating (negative longitudinal g), 0 when accelerating/coasting
+    # Derived and additional channels:
     #
-    # Note: We approximate gravity removal by subtracting 9.81 from accel_z only.
-    # This is valid when the car is on relatively flat ground (< ~10° incline).
-    # For the accelerometer axes, Race-Keeper uses:
-    #   X = forward/backward (positive = forward acceleration)
-    #   Y = left/right (positive = leftward)
-    #   Z = up/down (positive = upward, ~9.81 at rest)
+    # Telemetry Overlay recognized columns (native support):
+    #   - pitch angle (deg): vehicle nose-up/down angle from accelerometer
+    #   - bank (deg): vehicle roll/bank angle from accelerometer
+    #   - turn rate (deg/s): yaw rate from gyroscope Z axis
+    #   - vertical speed (ft/min): GPS vertical speed converted to ft/min
+    #   - gps fix: always 3 (3D fix — these units have 17+ satellites)
+    #
+    # Custom gauge columns (auto-detected by Telemetry Overlay):
+    #   - g_lon / g_lat / g_total: g-forces from accelerometer
+    #   - braking: 1 when decelerating, 0 otherwise
+    #   - speed (km/h): speed in km/h for European tracks
+    #   - distance (km): cumulative distance traveled
+    #
+    # Pitch/bank angles from accelerometer:
+    #   During dynamic driving, these include both gravity and inertial forces,
+    #   showing the "effective" tilt the driver feels — useful for overlay.
+    #   pitch = atan2(ax, sqrt(ay² + az²))  — positive = nose up
+    #   bank  = atan2(-ay, az)              — positive = banking right
 
     columns = [
         "utc (ms)", "lat (deg)", "lon (deg)", "speed (m/s)", "alt (m)",
-        "heading (deg)", "satellites",
+        "heading (deg)", "satellites", "gps fix",
         "accel x (m/s²)", "accel y (m/s²)", "accel z (m/s²)",
         "gyro x (deg/s)", "gyro y (deg/s)", "gyro z (deg/s)",
+        "pitch angle (deg)", "bank (deg)", "turn rate (deg/s)",
+        "vertical speed (ft/min)",
         "g_lon", "g_lat", "g_total", "braking",
+        "speed (km/h)", "distance (km)",
     ]
 
     output_path = Path(output_path)
@@ -475,6 +486,11 @@ def export_csv(session: RKDSession, output_path: str | Path) -> None:
 
         # GPS interpolation index: tracks which two GPS fixes we're between
         gps_idx = 0
+
+        # Cumulative distance tracking
+        cum_distance = 0.0  # km
+        prev_lat = None
+        prev_lon = None
 
         for imu in imu_frames:
             # Skip IMU frames before the first GPS fix or after the last
@@ -501,6 +517,7 @@ def export_csv(session: RKDSession, output_path: str | Path) -> None:
                 speed = _lerp(g0.speed_ms, g1.speed_ms, t)
                 alt = _lerp(g0.altitude_m, g1.altitude_m, t)
                 heading = _lerp_angle(g0.heading_deg, g1.heading_deg, t)
+                vspeed_cms = _lerp(g0.vertical_speed_cms, g1.vertical_speed_cms, t)
                 sats = g0.satellites  # Satellites don't interpolate
             else:
                 # Last GPS fix — use directly
@@ -510,15 +527,42 @@ def export_csv(session: RKDSession, output_path: str | Path) -> None:
                 speed = g0.speed_ms
                 alt = g0.altitude_m
                 heading = g0.heading_deg
+                vspeed_cms = g0.vertical_speed_cms
                 sats = g0.satellites
 
-            # Compute derived g-force channels from body-frame accelerometer.
-            # Longitudinal (X axis): positive = accelerating, negative = braking
-            # Lateral (Y axis): positive = leftward force (turning right)
-            g_lon = imu.accel_x / 9.81
-            g_lat = -imu.accel_y / 9.81  # Negate so positive = right turn
+            # ── Derived channels ──
+
+            # G-forces from body-frame accelerometer
+            g_lon = imu.accel_x / 9.81       # Positive = accelerating
+            g_lat = -imu.accel_y / 9.81      # Positive = right turn
             g_total = math.sqrt(g_lon ** 2 + g_lat ** 2)
-            braking = 1 if g_lon < -0.05 else 0  # Threshold to ignore noise
+            braking = 1 if g_lon < -0.05 else 0
+
+            # Pitch angle: nose-up/down from accelerometer (degrees)
+            # atan2(forward_accel, sqrt(lateral² + vertical²))
+            pitch = math.degrees(math.atan2(
+                imu.accel_x,
+                math.sqrt(imu.accel_y ** 2 + imu.accel_z ** 2)
+            ))
+
+            # Bank angle: roll left/right from accelerometer (degrees)
+            # atan2(-lateral, vertical) — positive = banking right
+            bank = math.degrees(math.atan2(-imu.accel_y, imu.accel_z))
+
+            # Turn rate: yaw rate from gyroscope Z axis (deg/s)
+            turn_rate = imu.gyro_z
+
+            # Vertical speed: GPS vertical speed converted to ft/min
+            # 1 cm/s = 1.9685 ft/min
+            vspeed_ftmin = vspeed_cms * 1.9685
+
+            # Speed in km/h (custom gauge for European tracks)
+            speed_kmh = speed * 3.6
+
+            # Cumulative distance (km) — using haversine from previous row
+            if prev_lat is not None and prev_lon is not None:
+                cum_distance += _haversine(prev_lat, prev_lon, lat, lon)
+            prev_lat, prev_lon = lat, lon
 
             writer.writerow([
                 utc_ms,
@@ -528,16 +572,23 @@ def export_csv(session: RKDSession, output_path: str | Path) -> None:
                 f"{alt:.1f}",
                 f"{heading:.2f}",
                 sats,
+                3,  # gps fix (always 3D)
                 f"{imu.accel_x:.3f}",
                 f"{imu.accel_y:.3f}",
                 f"{imu.accel_z:.3f}",
                 f"{imu.gyro_x:.3f}",
                 f"{imu.gyro_y:.3f}",
                 f"{imu.gyro_z:.3f}",
+                f"{pitch:.2f}",
+                f"{bank:.2f}",
+                f"{turn_rate:.2f}",
+                f"{vspeed_ftmin:.1f}",
                 f"{g_lon:.3f}",
                 f"{g_lat:.3f}",
                 f"{g_total:.3f}",
                 braking,
+                f"{speed_kmh:.1f}",
+                f"{cum_distance:.4f}",
             ])
 
     rows = sum(1 for imu in imu_frames

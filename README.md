@@ -36,14 +36,19 @@ A CSV file ready to load into [Telemetry Overlay](https://goprotelemetryextracto
 | Channel | Rate | Source |
 |---------|------|--------|
 | GPS position (lat/lon) | 30 Hz (interpolated) | GPS receiver |
-| Speed (m/s) | 30 Hz (interpolated) | GPS receiver |
+| Speed (m/s + km/h) | 30 Hz (interpolated) | GPS receiver |
 | Altitude (m) | 30 Hz (interpolated) | GPS receiver |
 | Heading (deg) | 30 Hz (interpolated) | GPS receiver |
-| Satellites | 5 Hz | GPS receiver |
+| Vertical speed (ft/min) | 30 Hz (interpolated) | GPS receiver |
+| Satellites, GPS fix | 5 Hz | GPS receiver |
 | Accelerometer X/Y/Z (m/s²) | 30 Hz | IMU |
 | Gyroscope X/Y/Z (deg/s) | 30 Hz | IMU |
+| Pitch angle (deg) | 30 Hz | Computed from accelerometer |
+| Bank/roll angle (deg) | 30 Hz | Computed from accelerometer |
+| Turn rate (deg/s) | 30 Hz | Gyroscope Z axis |
 | G-force longitudinal/lateral/total | 30 Hz | Computed from IMU |
 | Braking indicator | 30 Hz | Computed from IMU |
+| Cumulative distance (km) | 30 Hz | Computed from GPS |
 
 The `utc (ms)` timestamp column enables **automatic sync** with video files in Telemetry Overlay.
 
