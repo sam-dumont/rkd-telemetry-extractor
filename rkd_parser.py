@@ -442,10 +442,25 @@ def export_csv(session: RKDSession, output_path: str | Path) -> None:
     gps_fixes = session.gps_fixes
     imu_frames = session.imu_frames
 
-    # Pre-compute UTC millisecond timestamps for each IMU frame by interpolating
-    # between GPS fixes. The frame numbers provide the interpolation basis.
     first_gps_frame = gps_fixes[0].frame
     last_gps_frame = gps_fixes[-1].frame
+
+    # Timestamp strategy: GPS timestamps have only 1-second resolution, so
+    # multiple 5 Hz GPS fixes within the same second share identical timestamps.
+    # Lerping between identical values produces repeated utc (ms) values, which
+    # causes Telemetry Overlay to display a dotted map and choppy gauges.
+    #
+    # Fix: use the frame numbers (which ARE unique at 30 Hz) to compute
+    # evenly-spaced timestamps. We map the full frame range linearly onto the
+    # GPS time range, giving every row a unique millisecond timestamp.
+    first_gps_utc_ms = gps_fixes[0].utc_ms
+    last_gps_utc_ms = gps_fixes[-1].utc_ms
+    total_frames = last_gps_frame - first_gps_frame
+    total_time_ms = last_gps_utc_ms - first_gps_utc_ms
+    if total_frames > 0:
+        ms_per_frame = total_time_ms / total_frames
+    else:
+        ms_per_frame = 1000.0 / 30.0  # fallback: exactly 30 FPS
 
     # Derived and additional channels:
     #
@@ -502,6 +517,10 @@ def export_csv(session: RKDSession, output_path: str | Path) -> None:
                    gps_fixes[gps_idx + 1].frame <= imu.frame):
                 gps_idx += 1
 
+            # Compute unique timestamp from frame number (not from GPS timestamps,
+            # which only have 1-second resolution and produce duplicates)
+            utc_ms = int(first_gps_utc_ms + (imu.frame - first_gps_frame) * ms_per_frame)
+
             # Interpolate GPS fields between the bracketing fixes
             g0 = gps_fixes[gps_idx]
             if gps_idx < len(gps_fixes) - 1:
@@ -511,7 +530,6 @@ def export_csv(session: RKDSession, output_path: str | Path) -> None:
                     t = (imu.frame - g0.frame) / frame_span
                 else:
                     t = 0.0
-                utc_ms = int(_lerp(g0.utc_ms, g1.utc_ms, t))
                 lat = _lerp(g0.latitude, g1.latitude, t)
                 lon = _lerp(g0.longitude, g1.longitude, t)
                 speed = _lerp(g0.speed_ms, g1.speed_ms, t)
@@ -521,7 +539,6 @@ def export_csv(session: RKDSession, output_path: str | Path) -> None:
                 sats = g0.satellites  # Satellites don't interpolate
             else:
                 # Last GPS fix — use directly
-                utc_ms = g0.utc_ms
                 lat = g0.latitude
                 lon = g0.longitude
                 speed = g0.speed_ms
