@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="rkd_parser.py"
+     xmlns="http://www.topografix.com/GPX/1/1"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>sample_mettet</name>
+    <desc>Race-Keeper telemetry — Car ID 11098</desc>
+    <time>2021-04-04T08:00:40Z</time>
+  </metadata>
+  <trk>
+    <name>sample_mettet</name>
+    <trkseg>
+      <trkpt lat="50.3010636" lon="4.6550936">
+        <ele>256.6</ele>
+        <time>2021-04-04T10:00:23.000Z</time>
+        <sat>19</sat>
+        <speed>24.09</speed>
+      </trkpt>
+      <trkpt lat="50.3011006" lon="4.6551297">
+        <ele>256.9</ele>
+        <time>2021-04-04T10:00:23.000Z</time>
+        <sat>19</sat>
+        <speed>24.32</speed>
+      </trkpt>
+      <trkpt lat="50.3011378" lon="4.6551660">
+        <ele>257.2</ele>
+        <time>2021-04-04T10:00:23.000Z</time>
+        <sat>19</sat>
+        <speed>24.51</speed>
+      </trkpt>
+      <trkpt lat="50.3011754" lon="4.6552028">
+        <ele>257.4</ele>
+        <time>2021-04-04T10:00:23.000Z</time>
+        <sat>19</sat>
+        <speed>24.72</speed>
+      </trkpt>
+      <trkpt lat="50.3012133" lon="4.6552399">
+        <ele>257.7</ele>
+        <time>2021-04-04T10:00:23.000Z</time>
+        <sat>19</sat>
+        <speed>24.95</speed>
+      </trkpt>
+      <trkpt lat="50.3012323" lon="4.6552586">
+        <ele>257.8</ele>
+        <time>2021-04-04T10:00:23.000Z</time>
+        <sat>19</sat>
+        <speed>24.97</speed>
+      </trkpt>
+      <trkpt lat="50.3012705" lon="4.6552959">
+        <ele>258.1</ele>
+        <time>2021-04-04T10:00:24.000Z</time>
+        <sat>19</sat>
+        <speed>25.13</speed>
+      </trkpt>
+      <trkpt lat="50.3013089" lon="4.6553334">
+        <ele>258.4</ele>
+        <time>2021-04-04T10:00:24.000Z</time>
+        <sat>19</sat>
+        <speed>25.22</speed>
+      </trkpt>
+      <trkpt lat="50.3013473" lon="4.6553708">
+        <ele>258.7</ele>
+        <time>2021-04-04T10:00:24.000Z</time>
+        <sat>19</sat>
+        <speed>25.19</speed>
+      </trkpt>
+      <trkpt lat="50.3013855" lon="4.6554082">
+        <ele>258.9</ele>
+        <time>2021-04-04T10:00:24.000Z</time>
+        <sat>19</sat>
+        <speed>25.12</speed>
+      </trkpt>
+      <trkpt lat="50.3014237" lon="4.6554454">
+        <ele>259.2</ele>
+        <time>2021-04-04T10:00:25.000Z</time>
+        <sat>19</sat>
+        <speed>25.00</speed>
+      </trkpt>
+      <trkpt lat="50.3014616" lon="4.6554823">
+        <ele>259.5</ele>
+        <time>2021-04-04T10:00:25.000Z</time>
+        <sat>19</sat>
+        <speed>24.87</speed>
+      </trkpt>
+      <trkpt lat="50.3014993" lon="4.6555190">
+        <ele>259.7</ele>
+        <time>2021-04-04T10:00:25.000Z</time>
+        <sat>19</sat>
+        <speed>24.67</speed>
+      </trkpt>
+      <trkpt lat="50.3015365" lon="4.6555554">
+        <ele>260.0</ele>
+        <time>2021-04-04T10:00:25.000Z</time>
+        <sat>19</sat>
+        <speed>24.42</speed>
+      </trkpt>
+      <trkpt lat="50.3015733" lon="4.6555915">
+        <ele>260.2</ele>
+        <time>2021-04-04T10:00:25.000Z</time>
+        <sat>19</sat>
+        <speed>24.12</speed>
+      </trkpt>
+      <trkpt lat="50.3016091" lon="4.6556270">
+        <ele>260.5</ele>
+        <time>2021-04-04T10:00:26.000Z</time>
+        <sat>19</sat>
+        <speed>23.44</speed>
+      </trkpt>
+      <trkpt lat="50.3016432" lon="4.6556613">
+        <ele>260.7</ele>
+        <time>2021-04-04T10:00:26.000Z</time>
+        <sat>19</sat>
+        <speed>22.35</speed>
+      </trkpt>
+      <trkpt lat="50.3016757" lon="4.6556942">
+        <ele>260.9</ele>
+        <time>2021-04-04T10:00:26.000Z</time>
+        <sat>19</sat>
+        <speed>21.30</speed>
+      </trkpt>
+      <trkpt lat="50.3017064" lon="4.6557258">
+        <ele>261.1</ele>
+        <time>2021-04-04T10:00:26.000Z</time>
+        <sat>19</sat>
+        <speed>20.28</speed>
+      </trkpt>
+      <trkpt lat="50.3017213" lon="4.6557411">
+        <ele>261.2</ele>
+        <time>2021-04-04T10:00:26.000Z</time>
+        <sat>19</sat>
+        <speed>19.83</speed>
+      </trkpt>
+      <trkpt lat="50.3017497" lon="4.6557706">
+        <ele>261.4</ele>
+        <time>2021-04-04T10:00:26.000Z</time>
+        <sat>19</sat>
+        <speed>18.75</speed>
+      </trkpt>
+      <trkpt lat="50.3017766" lon="4.6557985">
+        <ele>261.6</ele>
+        <time>2021-04-04T10:00:27.000Z</time>
+        <sat>19</sat>
+        <speed>17.77</speed>
+      </trkpt>
+      <trkpt lat="50.3018020" lon="4.6558246">
+        <ele>261.7</ele>
+        <time>2021-04-04T10:00:27.000Z</time>
+        <sat>19</sat>
+        <speed>16.67</speed>
+      </trkpt>
+      <trkpt lat="50.3018260" lon="4.6558490">
+        <ele>261.8</ele>
+        <time>2021-04-04T10:00:27.000Z</time>
+        <sat>19</sat>
+        <speed>15.71</speed>
+      </trkpt>
+      <trkpt lat="50.3018489" lon="4.6558720">
+        <ele>262.0</ele>
+        <time>2021-04-04T10:00:27.000Z</time>
+        <sat>19</sat>
+        <speed>14.97</speed>
+      </trkpt>
+      <trkpt lat="50.3018710" lon="4.6558941">
+        <ele>262.1</ele>
+        <time>2021-04-04T10:00:27.000Z</time>
+        <sat>19</sat>
+        <speed>14.50</speed>
+      </trkpt>
+      <trkpt lat="50.3018924" lon="4.6559150">
+        <ele>262.2</ele>
+        <time>2021-04-04T10:00:27.000Z</time>
+        <sat>19</sat>
+        <speed>13.96</speed>
+      </trkpt>
+      <trkpt lat="50.3019132" lon="4.6559347">
+        <ele>262.3</ele>
+        <time>2021-04-04T10:00:28.000Z</time>
+        <sat>19</sat>
+        <speed>13.37</speed>
+      </trkpt>
+      <trkpt lat="50.3019331" lon="4.6559530">
+        <ele>262.4</ele>
+        <time>2021-04-04T10:00:28.000Z</time>
+        <sat>19</sat>
+        <speed>12.70</speed>
+      </trkpt>
+      <trkpt lat="50.3019522" lon="4.6559696">
+        <ele>262.5</ele>
+        <time>2021-04-04T10:00:28.000Z</time>
+        <sat>19</sat>
+        <speed>12.03</speed>
+      </trkpt>
+      <trkpt lat="50.3019707" lon="4.6559846">
+        <ele>262.6</ele>
+        <time>2021-04-04T10:00:28.000Z</time>
+        <sat>19</sat>
+        <speed>11.48</speed>
+      </trkpt>
+      <trkpt lat="50.3019891" lon="4.6559982">
+        <ele>262.7</ele>
+        <time>2021-04-04T10:00:28.000Z</time>
+        <sat>19</sat>
+        <speed>11.23</speed>
+      </trkpt>
+      <trkpt lat="50.3020074" lon="4.6560101">
+        <ele>262.8</ele>
+        <time>2021-04-04T10:00:29.000Z</time>
+        <sat>19</sat>
+        <speed>11.02</speed>
+      </trkpt>
+      <trkpt lat="50.3020256" lon="4.6560201">
+        <ele>262.9</ele>
+        <time>2021-04-04T10:00:29.000Z</time>
+        <sat>19</sat>
+        <speed>10.68</speed>
+      </trkpt>
+      <trkpt lat="50.3020436" lon="4.6560276">
+        <ele>262.9</ele>
+        <time>2021-04-04T10:00:29.000Z</time>
+        <sat>19</sat>
+        <speed>10.28</speed>
+      </trkpt>
+      <trkpt lat="50.3020611" lon="4.6560326">
+        <ele>263.0</ele>
+        <time>2021-04-04T10:00:29.000Z</time>
+        <sat>19</sat>
+        <speed>9.84</speed>
+      </trkpt>
+      <trkpt lat="50.3020783" lon="4.6560352">
+        <ele>263.0</ele>
+        <time>2021-04-04T10:00:30.000Z</time>
+        <sat>19</sat>
+        <speed>9.56</speed>
+      </trkpt>
+      <trkpt lat="50.3020950" lon="4.6560354">
+        <ele>263.1</ele>
+        <time>2021-04-04T10:00:30.000Z</time>
+        <sat>19</sat>
+        <speed>9.29</speed>
+      </trkpt>
+      <trkpt lat="50.3021112" lon="4.6560331">
+        <ele>263.1</ele>
+        <time>2021-04-04T10:00:30.000Z</time>
+        <sat>19</sat>
+        <speed>8.99</speed>
+      </trkpt>
+      <trkpt lat="50.3021269" lon="4.6560287">
+        <ele>263.1</ele>
+        <time>2021-04-04T10:00:30.000Z</time>
+        <sat>19</sat>
+        <speed>8.90</speed>
+      </trkpt>
+      <trkpt lat="50.3021421" lon="4.6560220">
+        <ele>263.2</ele>
+        <time>2021-04-04T10:00:30.000Z</time>
+        <sat>19</sat>
+        <speed>8.78</speed>
+      </trkpt>
+      <trkpt lat="50.3021566" lon="4.6560131">
+        <ele>263.2</ele>
+        <time>2021-04-04T10:00:30.000Z</time>
+        <sat>19</sat>
+        <speed>8.69</speed>
+      </trkpt>
+      <trkpt lat="50.3021701" lon="4.6560023">
+        <ele>263.2</ele>
+        <time>2021-04-04T10:00:31.000Z</time>
+        <sat>19</sat>
+        <speed>8.45</speed>
+      </trkpt>
+      <trkpt lat="50.3021830" lon="4.6559895">
+        <ele>263.2</ele>
+        <time>2021-04-04T10:00:31.000Z</time>
+        <sat>19</sat>
+        <speed>8.52</speed>
+      </trkpt>
+      <trkpt lat="50.3021950" lon="4.6559748">
+        <ele>263.2</ele>
+        <time>2021-04-04T10:00:31.000Z</time>
+        <sat>19</sat>
+        <speed>8.50</speed>
+      </trkpt>
+      <trkpt lat="50.3022060" lon="4.6559581">
+        <ele>263.2</ele>
+        <time>2021-04-04T10:00:31.000Z</time>
+        <sat>19</sat>
+        <speed>8.61</speed>
+      </trkpt>
+      <trkpt lat="50.3022162" lon="4.6559394">
+        <ele>263.3</ele>
+        <time>2021-04-04T10:00:31.000Z</time>
+        <sat>19</sat>
+        <speed>8.84</speed>
+      </trkpt>
+      <trkpt lat="50.3022209" lon="4.6559293">
+        <ele>263.2</ele>
+        <time>2021-04-04T10:00:32.000Z</time>
+        <sat>19</sat>
+        <speed>8.88</speed>
+      </trkpt>
+      <trkpt lat="50.3022254" lon="4.6559188">
+        <ele>263.2</ele>
+        <time>2021-04-04T10:00:32.000Z</time>
+        <sat>19</sat>
+        <speed>9.01</speed>
+      </trkpt>
+      <trkpt lat="50.3022336" lon="4.6558964">
+        <ele>263.2</ele>
+        <time>2021-04-04T10:00:32.000Z</time>
+        <sat>19</sat>
+        <speed>9.29</speed>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>
