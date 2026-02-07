@@ -2,7 +2,7 @@
 
 **Extract GPS, accelerometer, and gyroscope data from Race-Keeper `.rkd` telemetry files.**
 
-Race-Keeper "Instant Video" systems (by Trivinci/IENSO Inc.) record synchronized video and telemetry at professional track days across Europe. The telemetry is stored in proprietary `.rkd` binary files, readable only with the included Windows-only player.
+Race-Keeper "Instant Video" systems (by IENSO Inc., USA) record synchronized video and telemetry at professional track days and racing events. The telemetry is stored in proprietary `.rkd` binary files, readable only with the included Windows-only player.
 
 This project provides:
 - A **cross-platform Python parser** for `.rkd` files (no dependencies)
@@ -107,6 +107,13 @@ The `samples/` directory contains:
 
 ```
 ├── rkd_parser.py         # Main parser tool (standalone, no deps)
+├── tests/                # Test suite (100% coverage required)
+│   └── test_rkd_parser.py
+├── pyproject.toml        # Project config (pytest, coverage)
+├── Makefile              # Standardized commands
+├── CLAUDE.md             # Claude Code contribution guidelines
+├── .github/workflows/
+│   └── ci.yml            # CI/CD pipeline
 ├── RKD_FORMAT_SPEC.md    # Formal binary format specification
 ├── RESEARCH_NOTES.md     # Reverse-engineering narrative
 ├── SESSION_LOG.md        # Claude Code interaction log
@@ -143,21 +150,24 @@ The format specification in [RKD_FORMAT_SPEC.md](RKD_FORMAT_SPEC.md) is designed
 
 The parser code (`rkd_parser.py`) serves as a reference implementation — it's deliberately written to be readable with extensive inline comments explaining each binary format detail.
 
+## Limitations
+
+- **No OBD-2 data support yet.** The RKD format likely supports OBD-2 telemetry (engine RPM, throttle position, etc.), but the recordings used for reverse-engineering did not contain any OBD-2 records. PRs with sample `.rkd` files that include OBD-2 data are very welcome — this would allow implementing support for those channels.
+
 ## Contributing
 
 Found a Race-Keeper system with different record types or data structures? Contributions welcome:
 - Open an issue with a hex dump of the first 256 bytes
 - If possible, share a sample `.rkd` file (or the record type summary from `--info`)
+- **Especially wanted:** `.rkd` files with OBD-2 data for testing and implementation
 
 ## Credits
 
-- **Reverse engineering & implementation:** Sam
+- **Reverse engineering & implementation:** [@sam-dumont](https://github.com/sam-dumont)
 - **AI-assisted analysis:** [Claude Code](https://claude.ai/claude-code) (Anthropic)
-- **Track day:** [Sprint Racing](https://www.sprint-racing.be/) at Circuit de Mettet, Belgium
-- **Hardware:** Race-Keeper "Instant Video" by Trivinci / IENSO Inc.
 
 ## License
 
 MIT License — see [LICENSE](LICENSE)
 
-This project is the result of independent reverse engineering. It is not affiliated with, endorsed by, or connected to Race-Keeper, Trivinci, IENSO Inc., or Sprint Racing.
+This project is the result of independent reverse engineering. It is not affiliated with, endorsed by, or connected to Race-Keeper or IENSO Inc.

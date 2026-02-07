@@ -12,6 +12,11 @@ __pycache__/
 !samples/sample_output.csv
 !samples/sample_output.gpx
 
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
 # Editor
 *.swp
 *.swo
