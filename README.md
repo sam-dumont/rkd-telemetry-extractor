@@ -5,28 +5,37 @@
 Race-Keeper "Instant Video" systems (by [Trivinci Systems LLC](https://trivinci.com/), USA) record synchronized video and telemetry at professional track days and racing events. The telemetry is stored in proprietary `.rkd` binary files, readable only with the included Windows-only player.
 
 This project provides:
-- A **cross-platform Python parser** for `.rkd` files (no dependencies)
+- **Two independent parser implementations** — Python and Go — producing identical output
 - Export to **[Telemetry Overlay](https://goprotelemetryextractor.com/) Custom CSV** (30 Hz)
 - Export to **GPX 1.1** for track visualization
 - The **first public documentation** of the RKD binary format
 
 ## Quick Start
 
+### Python (no dependencies)
+
 ```bash
-# Parse a single file — exports CSV + GPX
-python3 rkd_parser.py outing.rkd
-
-# Print session info only (no export)
-python3 rkd_parser.py outing.rkd --info
-
-# Process all .rkd files on a USB stick
-python3 rkd_parser.py --all-in /Volumes/RACEKEEPER/
-
-# Export CSV only to a specific directory
-python3 rkd_parser.py outing.rkd --no-gpx --output-dir ./exports/
+cd python
+python3 rkd_parser.py outing.rkd              # Export CSV + GPX
+python3 rkd_parser.py outing.rkd --info        # Print session summary only
+python3 rkd_parser.py --all-in /Volumes/RACEKEEPER/  # Batch process
 ```
 
-**Requirements:** Python 3.9+ (no pip dependencies — stdlib only)
+**Requirements:** Python 3.9+ (stdlib only)
+
+### Go (single binary)
+
+```bash
+cd go
+go build -o rkd-parser .
+./rkd-parser outing.rkd                        # Export CSV + GPX
+./rkd-parser -info outing.rkd                  # Print session summary only
+./rkd-parser -all-in /Volumes/RACEKEEPER/      # Batch process
+```
+
+**Requirements:** Go 1.21+ (stdlib only)
+
+Both implementations produce **byte-for-byte identical** CSV and GPX output.
 
 ## What You Get
 
@@ -106,23 +115,26 @@ The `samples/` directory contains:
 ## Project Structure
 
 ```
-├── rkd_parser.py         # Main parser tool (standalone, no deps)
-├── tests/                # Test suite (100% coverage required)
-│   └── test_rkd_parser.py
-├── pyproject.toml        # Project config (pytest, coverage)
-├── Makefile              # Standardized commands
-├── CLAUDE.md             # Claude Code contribution guidelines
-├── .github/workflows/
-│   └── ci.yml            # CI/CD pipeline
-├── RKD_FORMAT_SPEC.md    # Formal binary format specification
-├── RESEARCH_NOTES.md     # Reverse-engineering narrative
-├── SESSION_LOG.md        # Claude Code interaction log
-├── LICENSE               # MIT license
-└── samples/
-    ├── README.md         # Sample data documentation
-    ├── sample_mettet.rkd # Truncated RKD sample
-    ├── sample_output.csv # Example CSV export
-    └── sample_output.gpx # Example GPX export
+├── python/                # Python implementation
+│   ├── rkd_parser.py      #   Parser, exporters, CLI (standalone, no deps)
+│   ├── tests/             #   Test suite (77 tests, 100% coverage)
+│   ├── pyproject.toml     #   pytest + coverage config
+│   └── Makefile           #   install, test, lint, clean
+├── go/                    # Go implementation
+│   ├── main.go            #   CLI entry point
+│   ├── rkd/               #   Parser package
+│   ├── go.mod             #   Module config
+│   └── Makefile           #   build, test, lint, clean
+├── samples/               # Shared test data
+│   ├── sample_mettet.rkd  #   Truncated RKD sample
+│   ├── sample_output.csv  #   Reference CSV export
+│   └── sample_output.gpx  #   Reference GPX export
+├── Makefile               # Root: test/lint/build all
+├── CLAUDE.md              # Claude Code contribution guidelines
+├── RKD_FORMAT_SPEC.md     # Formal binary format specification
+├── RESEARCH_NOTES.md      # Reverse-engineering narrative
+├── SESSION_LOG.md         # Claude Code interaction log
+└── LICENSE                # MIT license
 ```
 
 ## Background
@@ -136,7 +148,7 @@ The format was reverse-engineered in a single day using **Claude Code** as a col
 If you're here because you want to use Race-Keeper data with [Telemetry Overlay](https://goprotelemetryextractor.com/):
 
 1. Copy your `outing.rkd` file from the USB stick
-2. Run: `python3 rkd_parser.py outing.rkd`
+2. Run: `cd python && python3 rkd_parser.py outing.rkd` (or use the Go binary)
 3. Load the generated `.csv` into Telemetry Overlay as a "Custom CSV" data source
 4. The UTC timestamps will auto-sync with your video
 
@@ -148,7 +160,7 @@ The format specification in [RKD_FORMAT_SPEC.md](RKD_FORMAT_SPEC.md) is designed
 - Validation checksums for testing
 - Example hex dumps
 
-The parser code (`rkd_parser.py`) serves as a reference implementation — it's deliberately written to be readable with extensive inline comments explaining each binary format detail.
+The Python parser (`python/rkd_parser.py`) serves as a reference implementation — it's deliberately written to be readable with extensive inline comments explaining each binary format detail. The Go implementation (`go/`) is a direct port that produces identical output.
 
 ## Limitations
 

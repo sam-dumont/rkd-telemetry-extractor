@@ -1,16 +1,17 @@
 # Claude Code Session Log
 
-*Key interactions from the reverse-engineering of the Race-Keeper RKD format.*
+*Key interactions from the reverse-engineering of the Race-Keeper RKD format and building both Python and Go implementations.*
 
 ## Session Overview
 
-The RKD format was reverse-engineered across **three Claude Code sessions** on February 6, 2026.
+The RKD format was reverse-engineered across **three Claude Code sessions** on February 6, 2026, followed by a **fourth session** on February 7 for documentation cleanup, test suite creation, and Go implementation.
 
 | Session | ID | Duration | Focus |
 |---------|----|----------|-------|
 | 1 | `5c005614-3279-4557-91ae-e03dd61f0a3e` | ~3 hours | Initial binary analysis, format discovery, GPS decoding |
 | 2 | `dbf1c487-c79d-4d8f-a6a4-0b20c0f1666b` | ~2 hours | IMU calibration, cross-validation, export implementation |
 | 3 | `cd56f11a-e6bb-474b-b36f-afefd1e92687` | ~15 min | Plan review and refinement |
+| 4 | `d3a26917-342c-4637-b7fb-6c38877eec8c` | ~3 hours | Docs, tests, CI/CD, Go implementation, repo reorganization |
 
 ### Transcript Locations
 
@@ -143,15 +144,65 @@ Full JSONL transcripts are stored at:
 | 14 | Frame numbers split across two uint16 fields | 1 | Structural analysis |
 | 15 | 30 Hz IMU enables derived g-force channels | 3 | Domain knowledge |
 
+### Session 4: Documentation, Tests, and Go Implementation
+
+After the initial commit of the Python parser and format documentation, a fourth session prepared the project for public release.
+
+#### 9. Documentation Cleanup
+
+**User prompt (paraphrased):** "Remove incorrect credits, fix the manufacturer name, use my GitHub handle instead of first name, and note OBD-2 support status."
+
+**What Claude Code did:**
+- Removed credits for Telemetry Overlay, Sprint Racing, and hardware vendor
+- Changed "Sam" to "@sam-dumont" across all files
+- Fixed manufacturer: identified Trivinci Systems LLC (USA) through web research
+- Added OBD-2 limitation note — the recorder supports it, but test recordings had no OBD-2 scanner connected
+
+#### 10. Test Suite and CI/CD
+
+**User prompt:** "I expect 100% code coverage."
+
+**What Claude Code did:**
+- Created comprehensive test suite with 77 tests in `tests/test_rkd_parser.py`
+- Achieved 100% branch coverage (identified one provably unreachable branch, marked with `pragma: no cover`)
+- Created `CLAUDE.md` with PR guidelines for contributors using Claude Code
+- Set up GitHub Actions CI (Python 3.9/3.11/3.13, coverage enforcement)
+
+#### 11. Go Implementation
+
+**User prompt:** "How hard would this be to create a Go implementation? With the full test suite and spec it should be trivial to do TDD."
+
+**What Claude Code did:**
+- Built complete Go implementation from the Python reference and format spec
+- Structured as `go/rkd/` package (parser, exporters) + `go/main.go` (CLI)
+- Used `encoding/binary` for all binary parsing, `encoding/csv` with `UseCRLF=true`
+- Fixed a subtle `math.Mod` difference — Go preserves sign of dividend unlike Python `%`, requiring a `pyMod()` helper for angle interpolation
+- **Verified byte-for-byte identical CSV and GPX output** between Python and Go
+- Wrote 76 Go tests including cross-implementation output comparison
+
+#### 12. Repository Reorganization
+
+**User prompt:** "Reorganize to have `/go`, `/python` etc. so the structure is clean."
+
+**What Claude Code did:**
+- Moved Python files under `python/` (parser, tests, config, Makefile)
+- Organized Go files under `go/` (CLI, parser package, Makefile)
+- Kept `samples/` at root (shared by both implementations)
+- Created root `Makefile` delegating to both implementations
+- Updated `CLAUDE.md` for the new dual-implementation structure
+
 ---
 
 ## Tools Used
 
 - **Claude Code** (claude-opus-4-6) — Primary analysis and coding partner
-- **Python 3** — All parsing, validation, and export code
+- **Python 3** — Original parser implementation
+- **Go 1.24** — Second implementation (byte-for-byte identical output)
 - **xxd** — Initial hex dump analysis
-- **struct module** — Binary unpacking
+- **struct module** — Python binary unpacking
+- **encoding/binary** — Go binary unpacking
 - **haversine formula** — GPS-derived speed cross-validation
+- **pytest + pytest-cov** — Python test suite with 100% branch coverage
 
 ---
 

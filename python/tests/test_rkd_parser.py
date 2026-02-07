@@ -45,7 +45,7 @@ from rkd_parser import (
     process_file,
 )
 
-SAMPLE_RKD = Path(__file__).resolve().parent.parent / "samples" / "sample_mettet.rkd"
+SAMPLE_RKD = Path(__file__).resolve().parent.parent.parent / "samples" / "sample_mettet.rkd"
 
 
 # ─────────────────────────────────────────────────────────────────────────────

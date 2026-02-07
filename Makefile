@@ -1,13 +1,20 @@
-.PHONY: install test lint clean
+.PHONY: test test-python test-go lint build clean
 
-install:
-	pip install pytest pytest-cov
+test: test-python test-go
 
-test:
-	python -m pytest
+test-python:
+	cd python && make test
+
+test-go:
+	cd go && make test
 
 lint:
-	python -m py_compile rkd_parser.py
+	cd python && make lint
+	cd go && make lint
+
+build:
+	cd go && make build
 
 clean:
-	rm -rf __pycache__ .pytest_cache .coverage htmlcov tests/__pycache__
+	cd python && make clean
+	cd go && make clean
