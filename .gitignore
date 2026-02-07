@@ -16,6 +16,8 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
+coverage.out
+*_coverage.out
 
 # Editor
 *.swp
