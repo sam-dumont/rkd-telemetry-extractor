@@ -6,7 +6,7 @@ Parses proprietary Race-Keeper (.rkd) binary telemetry files and exports to:
   - Telemetry Overlay Custom CSV (30 Hz, with GPS interpolation)
   - GPX 1.1 track format (at native GPS rate, ~5 Hz)
 
-The RKD format is used by Race-Keeper "Instant Video" systems (Trivinci/IENSO Inc.)
+The RKD format is used by Race-Keeper "Instant Video" systems (Trivinci Systems LLC)
 commonly found in professional track day and racing video recording setups.
 
 This is the first public implementation of the RKD binary format parser.
@@ -19,7 +19,7 @@ Usage:
     python3 rkd_parser.py outing.rkd --no-gpx          # CSV only
     python3 rkd_parser.py outing.rkd --output-dir out/ # Custom output directory
 
-Author: Sam (with Claude Code)
+Author: @sam-dumont (with Claude Code)
 License: MIT
 """
 
@@ -474,7 +474,7 @@ def export_csv(session: RKDSession, output_path: str | Path) -> None:
     # Custom gauge columns (auto-detected by Telemetry Overlay):
     #   - g_lon / g_lat / g_total: g-forces from accelerometer
     #   - braking: 1 when decelerating, 0 otherwise
-    #   - speed (km/h): speed in km/h for European tracks
+    #   - speed (km/h): speed in km/h
     #   - distance (km): cumulative distance traveled
     #
     # Pitch/bank angles from accelerometer:
@@ -528,7 +528,7 @@ def export_csv(session: RKDSession, output_path: str | Path) -> None:
                 frame_span = g1.frame - g0.frame
                 if frame_span > 0:
                     t = (imu.frame - g0.frame) / frame_span
-                else:
+                else:  # pragma: no cover — defensive: while loop above always advances past equal frames
                     t = 0.0
                 lat = _lerp(g0.latitude, g1.latitude, t)
                 lon = _lerp(g0.longitude, g1.longitude, t)

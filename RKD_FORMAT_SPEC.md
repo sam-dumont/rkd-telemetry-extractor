@@ -2,12 +2,12 @@
 
 **Version:** 1.0 (first public documentation)
 **Date:** 2026-02-06
-**Author:** Sam (with Claude Code)
+**Author:** @sam-dumont (with Claude Code)
 **Status:** Complete — fully validated against two independent sessions
 
 ## Overview
 
-The `.rkd` file format is used by **Race-Keeper "Instant Video"** systems (manufactured by Trivinci / IENSO Inc.) to store telemetry data alongside track day and racing video recordings. These systems are commonly installed in professional track day experience cars at circuits across Europe.
+The `.rkd` file format is used by **Race-Keeper "Instant Video"** systems (manufactured by [Trivinci Systems LLC](https://trivinci.com/), USA) to store telemetry data alongside track day and racing video recordings.
 
 The telemetry data includes:
 - **GPS** at 5 Hz (position, speed, heading, altitude, satellites)
@@ -467,4 +467,4 @@ Example: `06107796_R8V10_11098_20210404_130024/`
 
 ## License
 
-This specification is released under the MIT License. It was produced through independent reverse engineering and is not affiliated with or endorsed by Race-Keeper, Trivinci, or IENSO Inc.
+This specification is released under the MIT License. It was produced through independent reverse engineering and is not affiliated with or endorsed by Race-Keeper or Trivinci Systems LLC.
