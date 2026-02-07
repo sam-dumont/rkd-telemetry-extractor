@@ -1144,6 +1144,96 @@ func TestBaseName(t *testing.T) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Error paths
+// ─────────────────────────────────────────────────────────────────────────────
+
+func TestExportCSV_CreateError(t *testing.T) {
+	session := makeSessionWithData(3, 18, -1)
+	err := ExportCSV(session, "/nonexistent/dir/out.csv")
+	if err == nil {
+		t.Error("expected error for invalid output path")
+	}
+}
+
+func TestExportGPX_CreateError(t *testing.T) {
+	session := makeSessionWithData(3, 18, -1)
+	err := ExportGPX(session, "/nonexistent/dir/out.gpx")
+	if err == nil {
+		t.Error("expected error for invalid output path")
+	}
+}
+
+func TestCreateSampleRKD_WriteError(t *testing.T) {
+	gpsRec := makeRecord(RecordGPS, defaultGPSPayload(), 0)
+	raw := minimalRKD(gpsRec)
+	tmpDir := t.TempDir()
+	src := filepath.Join(tmpDir, "input.rkd")
+	os.WriteFile(src, raw, 0644)
+	err := CreateSampleRKD(src, "/nonexistent/dir/out.rkd", 10)
+	if err == nil {
+		t.Error("expected error for invalid output path")
+	}
+}
+
+func TestParseBytes_ValidMagicShortMeta(t *testing.T) {
+	// Valid magic but not enough data for meta header
+	data := append([]byte{}, RKDMagic...)
+	data = append(data, make([]byte, 10)...) // not enough for 28-byte meta header
+	p := &Parser{}
+	_, err := p.ParseBytes(data, "short.rkd")
+	if err == nil {
+		t.Error("expected error for short meta header")
+	}
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PrintSessionInfo min/max branch coverage
+// ─────────────────────────────────────────────────────────────────────────────
+
+func TestPrintSessionInfo_DecreasingGPSData(t *testing.T) {
+	session := &RKDSession{
+		FilePath:     "test.rkd",
+		FileSize:     1000,
+		CarID:        11098,
+		Timestamp:    1617532800,
+		Config:       make(map[string]string),
+		RecordCounts: map[uint16]int{RecordGPS: 3},
+	}
+	// GPS fixes with DECREASING lat, lon, alt and VARYING sats
+	// to hit the minLat, minLon, minAlt, minSat, maxSat branches
+	session.GPSFixes = []GPSFix{
+		{Frame: 0, GPSTimestamp: 1302000000, UTCMS: GPSToUTCMs(1302000000),
+			Satellites: 15, Latitude: 50.302, Longitude: 4.652,
+			SpeedMS: 10.0, HeadingDeg: 90.0, AltitudeM: 260.0},
+		{Frame: 6, GPSTimestamp: 1302000001, UTCMS: GPSToUTCMs(1302000001),
+			Satellites: 12, Latitude: 50.301, Longitude: 4.651,
+			SpeedMS: 11.0, HeadingDeg: 100.0, AltitudeM: 255.0},
+		{Frame: 12, GPSTimestamp: 1302000002, UTCMS: GPSToUTCMs(1302000002),
+			Satellites: 19, Latitude: 50.300, Longitude: 4.650,
+			SpeedMS: 12.0, HeadingDeg: 110.0, AltitudeM: 250.0},
+	}
+	session.IMUFrames = []IMUFrame{
+		{Frame: 0, AccelZ: 9.81},
+	}
+	old := os.Stdout
+	r, w, _ := os.Pipe()
+	os.Stdout = w
+	PrintSessionInfo(session)
+	w.Close()
+	os.Stdout = old
+	var buf bytes.Buffer
+	buf.ReadFrom(r)
+	out := buf.String()
+	// Verify min/max ranges appear
+	if !strings.Contains(out, "50.3000000") {
+		t.Error("expected min lat in output")
+	}
+	if !strings.Contains(out, "12 – 19") {
+		t.Error("expected satellite range 12–19 in output")
+	}
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Byte-for-byte identical output with Python
 // ─────────────────────────────────────────────────────────────────────────────
 
