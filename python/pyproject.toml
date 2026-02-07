@@ -3,7 +3,7 @@ name = "rkd-telemetry-extractor"
 version = "1.0.0"
 description = "Extract GPS, accelerometer, and gyroscope data from Race-Keeper .rkd telemetry files"
 requires-python = ">=3.9"
-license = "MIT"
+license = { text = "MIT" }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
