@@ -45,7 +45,7 @@ Key observations from the directory structure:
 - **Folder naming convention:** `{SERIAL}_{CARNAME}_{CARID}_{DATE}_{TIME}`
 - **Two sessions:** R8V10 (Audi) and HUR (Lamborghini), same device serial
 - **MPEG4 video** with a separate binary header file
-- The company names visible: **Trivinci** (manufacturer) and **IENSO Inc.** (parent company)
+- The company name visible: **Trivinci** (manufacturer — Trivinci Systems LLC, USA)
 - The `.rkd` extension: **R**ace-**K**eeper **D**ata
 
 ---

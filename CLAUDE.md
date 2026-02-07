@@ -2,7 +2,7 @@
 
 ## Project overview
 
-Race-Keeper RKD Telemetry Extractor — a standalone Python tool that parses proprietary `.rkd` binary telemetry files from Race-Keeper "Instant Video" systems (IENSO Inc.) and exports to CSV (Telemetry Overlay) and GPX formats.
+Race-Keeper RKD Telemetry Extractor — a standalone Python tool that parses proprietary `.rkd` binary telemetry files from Race-Keeper "Instant Video" systems (Trivinci Systems LLC) and exports to CSV (Telemetry Overlay) and GPX formats.
 
 - Single-file parser: `rkd_parser.py`
 - Zero external dependencies (Python 3.9+ stdlib only)

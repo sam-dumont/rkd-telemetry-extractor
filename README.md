@@ -2,7 +2,7 @@
 
 **Extract GPS, accelerometer, and gyroscope data from Race-Keeper `.rkd` telemetry files.**
 
-Race-Keeper "Instant Video" systems (by IENSO Inc., USA) record synchronized video and telemetry at professional track days and racing events. The telemetry is stored in proprietary `.rkd` binary files, readable only with the included Windows-only player.
+Race-Keeper "Instant Video" systems (by [Trivinci Systems LLC](https://trivinci.com/), USA) record synchronized video and telemetry at professional track days and racing events. The telemetry is stored in proprietary `.rkd` binary files, readable only with the included Windows-only player.
 
 This project provides:
 - A **cross-platform Python parser** for `.rkd` files (no dependencies)
@@ -152,7 +152,7 @@ The parser code (`rkd_parser.py`) serves as a reference implementation — it's 
 
 ## Limitations
 
-- **No OBD-2 data support yet.** The RKD format likely supports OBD-2 telemetry (engine RPM, throttle position, etc.), but the recordings used for reverse-engineering did not contain any OBD-2 records. PRs with sample `.rkd` files that include OBD-2 data are very welcome — this would allow implementing support for those channels.
+- **No OBD-2 data support yet.** Race-Keeper systems [support OBD-II](https://www.race-keeper.com/product/race-keeper-obdii-scanner/) for logging engine RPM, throttle position, coolant temperature, and more. The `.rkd` format includes OBD-2 record types, but the recordings used for reverse-engineering did not have an OBD-II scanner connected (the header log showed "no connection to OBD2"). PRs with sample `.rkd` files that include OBD-2 data are very welcome — this would allow implementing support for those channels.
 
 ## Contributing
 
@@ -170,4 +170,4 @@ Found a Race-Keeper system with different record types or data structures? Contr
 
 MIT License — see [LICENSE](LICENSE)
 
-This project is the result of independent reverse engineering. It is not affiliated with, endorsed by, or connected to Race-Keeper or IENSO Inc.
+This project is the result of independent reverse engineering. It is not affiliated with, endorsed by, or connected to Race-Keeper or Trivinci Systems LLC.

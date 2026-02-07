@@ -6,7 +6,7 @@ Parses proprietary Race-Keeper (.rkd) binary telemetry files and exports to:
   - Telemetry Overlay Custom CSV (30 Hz, with GPS interpolation)
   - GPX 1.1 track format (at native GPS rate, ~5 Hz)
 
-The RKD format is used by Race-Keeper "Instant Video" systems (Trivinci/IENSO Inc.)
+The RKD format is used by Race-Keeper "Instant Video" systems (Trivinci Systems LLC)
 commonly found in professional track day and racing video recording setups.
 
 This is the first public implementation of the RKD binary format parser.
