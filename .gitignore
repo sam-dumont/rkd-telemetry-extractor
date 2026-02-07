@@ -17,6 +17,7 @@ __pycache__/
 .coverage
 htmlcov/
 coverage.out
+*_cov.out
 *_coverage.out
 
 # Editor
