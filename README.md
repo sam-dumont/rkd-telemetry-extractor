@@ -10,6 +10,20 @@ This project provides:
 - Export to **GPX 1.1** for track visualization
 - The **first public documentation** of the RKD binary format
 
+## Before & After
+
+The Race-Keeper USB stick comes with a Windows-only video player. If you're on macOS or Linux, you're stuck with raw `.mp4` files and no telemetry.
+
+**Original Race-Keeper player (Windows only):**
+
+![Original Race-Keeper player with built-in telemetry overlay](screenshots/original.jpg)
+
+**After extracting with this tool and loading into Telemetry Overlay:**
+
+![Telemetry Overlay with extracted RKD data - speed, g-forces, GPS track, lap times](screenshots/telemetry_overlay.jpg)
+
+The CSV export gives you full control over which gauges to display, their appearance, and positioning - something the original player doesn't allow.
+
 ## Quick Start
 
 ### Python (no dependencies)

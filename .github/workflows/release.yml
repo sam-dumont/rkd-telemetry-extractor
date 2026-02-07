@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+
+      - name: Run tests before release
+        run: cd go && make test
+
+      - name: Build binaries
+        run: |
+          cd go
+          VERSION=${GITHUB_REF_NAME}
+          LDFLAGS="-s -w"
+
+          GOOS=linux   GOARCH=amd64 go build -ldflags="$LDFLAGS" -o "../dist/rkd-parser-${VERSION}-linux-amd64" .
+          GOOS=darwin  GOARCH=amd64 go build -ldflags="$LDFLAGS" -o "../dist/rkd-parser-${VERSION}-darwin-amd64" .
+          GOOS=darwin  GOARCH=arm64 go build -ldflags="$LDFLAGS" -o "../dist/rkd-parser-${VERSION}-darwin-arm64" .
+          GOOS=windows GOARCH=amd64 go build -ldflags="$LDFLAGS" -o "../dist/rkd-parser-${VERSION}-windows-amd64.exe" .
+
+      - name: Create checksums
+        run: |
+          cd dist
+          sha256sum * > checksums-sha256.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*
+          generate_release_notes: true
