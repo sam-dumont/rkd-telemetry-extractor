@@ -24,6 +24,8 @@ The Race-Keeper USB stick comes with a Windows-only video player. If you're on m
 
 The CSV export gives you full control over which gauges to display, their appearance, and positioning - something the original player doesn't allow.
 
+**See it in action:** [Demo video on YouTube](https://youtu.be/wit9Z-UgpcY) — Lamborghini Huracan at Circuit de Mettet, Belgium, with full telemetry overlay (speed, g-forces, GPS track map).
+
 ## Quick Start
 
 ### Python (no dependencies)
