@@ -1,8 +1,6 @@
 name: Claude Code Review
 
 on:
-  pull_request:
-    types: [opened, synchronize]
   issue_comment:
     types: [created]
   pull_request_review_comment:
@@ -16,9 +14,8 @@ permissions:
 jobs:
   claude-review:
     if: |
-      (github.event_name == 'pull_request') ||
-      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
-      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude'))
+      github.event.comment.user.login == github.repository_owner &&
+      contains(github.event.comment.body, '@claude')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
