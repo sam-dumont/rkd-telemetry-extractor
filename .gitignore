@@ -27,3 +27,4 @@ coverage.out
 .vscode/
 .idea/
 .nocommit/
+.playwright-mcp/

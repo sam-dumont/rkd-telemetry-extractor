@@ -142,13 +142,16 @@ func Haversine(lat1, lon1, lat2, lon2 float64) float64 {
 
 // Lerp performs linear interpolation between a and b at parameter t ∈ [0, 1].
 func Lerp(a, b, t float64) float64 {
-	return a + (b-a)*t
+	// float64() forces rounding of the product before adding a, preventing
+	// FMA fusion on arm64 which would otherwise cause 1-ULP differences
+	// vs Python (which always rounds intermediate results separately).
+	return a + float64((b-a)*t)
 }
 
 // LerpAngle interpolates between two angles in degrees, handling wraparound.
 func LerpAngle(a, b, t float64) float64 {
 	diff := pyMod(b-a+180, 360) - 180
-	result := a + diff*t
+	result := a + float64(diff*t)
 	return pyMod(result, 360)
 }
 
